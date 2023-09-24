@@ -1,18 +1,25 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Wstępny model transakcji, klucze i wymagania dot. wartości do zaktualizowania //
-
 const transaction = new Schema(
   {
-    firstKey: {
+    date: {
+      type: Date,
+    },
+    type: {
+      type: Boolean,
+      required: [true, "Type is required"],
+    },
+    category: {
+      type: String,
+      required: [true, "Category is required"],
+    },
+    comment: {
       type: String,
     },
-    secondKey: {
-      type: String,
-    },
-    thirdKey: {
-      type: String,
+    sum: {
+      type: Number,
+      required: [true, "Sum is required"],
     },
     owner: {
       type: Schema.Types.ObjectId,
