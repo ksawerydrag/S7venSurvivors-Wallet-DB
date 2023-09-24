@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const transactionsController = require("../../controllers/transactions.controllers");
-const auth = require("../../middlewares/auth");
+const transactionsController = require("../controllers/transactions.controllers");
+const auth = require("../middlewares/auth");
 
 router.get("/", auth, transactionsController.get);
 
