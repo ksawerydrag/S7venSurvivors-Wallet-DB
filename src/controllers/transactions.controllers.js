@@ -4,8 +4,13 @@ const idSchema = Joi.object({
   id: Joi.string().length(24).required(),
 });
 
-const { getTransactions } = require("../service/transactions.service");
-const Transaction = require("../models/transaction.model");
+const {
+  getTransactions,
+  // getCategories,
+  // getMore,
+  // createTransaction
+} = require("../service/transactions.service");
+// const Transaction = require("../models/transaction.model");
 
 const get = async (req, res) => {
   try {
@@ -24,4 +29,11 @@ const get = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+module.exports = {
+  get,
+  // categories,
+  // stats,
+  // create,
 };
