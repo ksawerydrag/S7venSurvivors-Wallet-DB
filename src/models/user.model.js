@@ -8,6 +8,7 @@ const user = new Schema(
     username: {
       type: String,
       required: [true, "Username is required"],
+      unique: true,
     },
     password: {
       type: String,
@@ -17,10 +18,6 @@ const user = new Schema(
       type: String,
       required: [true, "Email is required"],
       unique: true,
-      validate(value) {
-        const re = /\S+@\S+.\S+/;
-        return re.test(String(value).toLowerCase());
-      },
     },
     token: {
       type: String,
@@ -38,21 +35,6 @@ user.methods.validPassword = function (password) {
   return bCrypt.compareSync(password, this.password);
 };
 
-const joiSignupSchema = Joi.object({
-  password: Joi.string().required(),
-  email: Joi.string().required(),
-  token: Joi.string().required(),
-});
-
-const joiLoginSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().required(),
-});
-
 const User = mongoose.model("User", user, "users");
 
-module.exports = {
-  User,
-  joiSignupSchema,
-  joiLoginSchema,
-};
+module.exports = User;

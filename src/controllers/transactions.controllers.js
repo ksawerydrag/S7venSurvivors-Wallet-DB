@@ -12,7 +12,7 @@ const {
 } = require("../service/transactions.service");
 // const Transaction = require("../models/transaction.model");
 
-const get = async (req, res) => {
+const get = async (req, res, next) => {
   try {
     const { query, user } = req;
     const transactions = await getTransactions({ ...query, owner: user._id });
@@ -23,11 +23,7 @@ const get = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      status: "Internal Server Error",
-      error: "Unknown error occurred.",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
