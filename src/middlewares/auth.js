@@ -7,7 +7,6 @@ module.exports = (req, res, next) => {
         status: "error",
         code: 401,
         message: "Unathorized",
-        data: "Unathorized",
       });
     }
     req.user = user;
