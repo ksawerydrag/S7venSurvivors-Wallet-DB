@@ -2,15 +2,15 @@ const express = require("express");
 const router = express.Router();
 const validation = require("../middlewares/validation");
 const {
-  joiSignupSchema,
-  joiLoginSchema,
+  signupSchema,
+  loginSchema,
 } = require("../service/validation.service");
 const auth = require("../middlewares/auth");
 const userTask = require("../controllers/user.controllers");
 
-router.post("/signup", validation(joiSignupSchema), userTask.signUp);
+router.post("/signup", validation(signupSchema), userTask.signUp);
 
-router.post("/login", validation(joiLoginSchema), userTask.logIn);
+router.post("/login", validation(loginSchema), userTask.logIn);
 
 // router.get("/logout", auth, userTask.signOut);
 
