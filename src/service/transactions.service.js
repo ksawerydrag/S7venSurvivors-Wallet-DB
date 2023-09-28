@@ -10,7 +10,5 @@ const createTransaction = async (body) => {
 
 module.exports = {
   getTransactions,
-  // getCategories,
-  // getMore,
   createTransaction,
 };
