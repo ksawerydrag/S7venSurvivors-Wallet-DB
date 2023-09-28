@@ -7,10 +7,15 @@ const { transactionSchema } = require("../service/validation.service");
 
 router.get("/", auth, transactionsController.get);
 
-// router.get("/categories", auth, transactionsController.categories);
+router.get("/categories/:category", auth, transactionsController.categories);
 
 // router.get("/stats", auth, transactionsController.stats);
 
-router.post("/", auth, validation(transactionSchema), transactionsController.create);
+router.post(
+  "/",
+  auth,
+  validation(transactionSchema),
+  transactionsController.create
+);
 
 module.exports = router;
