@@ -8,12 +8,24 @@ const transaction = new Schema({
   },
   type: {
     type: String,
-    enum: ["income", "expenditure"],
-    required: [true, "You should choose: income or expenditure"],
+    enum: ["+", "-"],
+    required: [true, "You should choose type of transaction"],
   },
   category: {
     type: String,
-    required: [true, "Category is required"],
+    enum: [
+      "Main expenses",
+      "Products",
+      "Car",
+      "Self care",
+      "Child care",
+      "Household products",
+      "Education",
+      "Leisure",
+      "Other expenses",
+      "Entertainment",
+    ],
+    required: [true, "You should choose category"],
   },
   comment: {
     type: String,

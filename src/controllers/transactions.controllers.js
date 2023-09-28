@@ -26,8 +26,15 @@ const get = async (req, res, next) => {
 
 const categories = async (req, res) => {
   try {
-    const { category } = req.params;
-    const transactions = await getTransactions({ category });
+    let { category } = req.params;
+    category = category.replace(/ /g, "-");
+    const smallLetter = category.charAt(0).toLowerCase();
+    const restOfString = category.slice(1);
+    category = smallLetter + restOfString;
+    const capLetter = category.charAt(0).toUpperCase();
+    const originalLetters = capLetter + restOfString;
+    const original = originalLetters.replace(/-/g, " ");
+    const transactions = await getTransactions({ category: original });
     if (transactions.length === 0) {
       return res.status(404).json({
         status: "Not Found",
@@ -45,6 +52,28 @@ const categories = async (req, res) => {
     });
   }
 };
+
+// const categories = async (req, res) => {
+//   try {
+//     const { category } = req.params;
+//     const transactions = await getTransactions({ category });
+//     if (transactions.length === 0) {
+//       return res.status(404).json({
+//         status: "Not Found",
+//         message: "Transactions not found.",
+//       });
+//     }
+//     res.status(200).json({
+//       status: "OK",
+//       data: { transactions: transactions },
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       status: "Internal Server Error",
+//       message: error.message,
+//     });
+//   }
+// };
 
 const yearStats = async (req, res) => {
   try {
@@ -141,7 +170,10 @@ const create = async (req, res, next) => {
       data: { transaction: newTransaction },
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: "Internal Server Error",
+      message: error.message,
+    });
   }
 };
 

@@ -14,10 +14,24 @@ const loginSchema = Joi.object({
 const transactionSchema = Joi.object({
   date: Joi.date().iso(),
   type: Joi.string()
-    .valid("income", "expenditure")
+    .valid("+", "-")
     .required()
-    .error(new Error("You should choose: income or expenditure")),
-  category: Joi.string().required(),
+    .error(new Error("You should choose type of transaction")),
+  category: Joi.string()
+    .valid(
+      "Main expenses",
+      "Products",
+      "Car",
+      "Self care",
+      "Child care",
+      "Household products",
+      "Education",
+      "Leisure",
+      "Other expenses",
+      "Entertainment"
+    )
+    .required()
+    .error(new Error("You should choose category")),
   comment: Joi.string(),
   sum: Joi.number().required(),
   owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
@@ -26,5 +40,5 @@ const transactionSchema = Joi.object({
 module.exports = {
   signupSchema,
   loginSchema,
-  transactionSchema
+  transactionSchema,
 };
