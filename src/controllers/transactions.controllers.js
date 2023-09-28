@@ -53,28 +53,6 @@ const categories = async (req, res) => {
   }
 };
 
-// const categories = async (req, res) => {
-//   try {
-//     const { category } = req.params;
-//     const transactions = await getTransactions({ category });
-//     if (transactions.length === 0) {
-//       return res.status(404).json({
-//         status: "Not Found",
-//         message: "Transactions not found.",
-//       });
-//     }
-//     res.status(200).json({
-//       status: "OK",
-//       data: { transactions: transactions },
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       status: "Internal Server Error",
-//       message: error.message,
-//     });
-//   }
-// };
-
 const yearStats = async (req, res) => {
   try {
     const { year } = req.params;
