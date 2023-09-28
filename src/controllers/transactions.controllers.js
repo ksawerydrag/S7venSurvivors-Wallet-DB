@@ -6,7 +6,11 @@ const {
 
 const get = async (req, res, next) => {
   try {
-    const transactions = await Transaction.find();
+    const { query, user } = req;
+    const transactions = await Transaction.find({
+      ...query,
+      owner: user._id,
+    });
     if (transactions.length === 0) {
       return res.status(404).json({
         status: "Not Found",
@@ -26,6 +30,7 @@ const get = async (req, res, next) => {
 
 const categories = async (req, res) => {
   try {
+    const { user } = req;
     let { category } = req.params;
     category = category.replace(/ /g, "-");
     const smallLetter = category.charAt(0).toLowerCase();
@@ -34,7 +39,10 @@ const categories = async (req, res) => {
     const capLetter = category.charAt(0).toUpperCase();
     const originalLetters = capLetter + restOfString;
     const original = originalLetters.replace(/-/g, " ");
-    const transactions = await getTransactions({ category: original });
+    const transactions = await Transaction.find({
+      category: original,
+      owner: user._id,
+    });
     if (transactions.length === 0) {
       return res.status(404).json({
         status: "Not Found",
@@ -55,6 +63,7 @@ const categories = async (req, res) => {
 
 const yearStats = async (req, res) => {
   try {
+    const { user } = req;
     const { year } = req.params;
     if (isNaN(year)) {
       return res.status(400).json({
@@ -65,11 +74,12 @@ const yearStats = async (req, res) => {
     const yearInt = parseInt(year, 10);
     const startDate = new Date(yearInt, 0, 1);
     const endDate = new Date(yearInt, 11, 31);
-    const transactions = await getTransactions({
+    const transactions = await Transaction.find({
       date: {
         $gte: startDate,
         $lte: endDate,
       },
+      owner: user._id,
     });
     if (transactions.length === 0) {
       return res.status(404).json({
@@ -93,6 +103,7 @@ const yearStats = async (req, res) => {
 
 const monthStats = async (req, res) => {
   try {
+    const { user } = req;
     const { year, month } = req.params;
     if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
       return res.status(400).json({
@@ -110,11 +121,12 @@ const monthStats = async (req, res) => {
       `${nextYear}-${nextMonth.toString().padStart(2, "0")}-01`
     );
     endDate.setDate(endDate.getDate() - 1);
-    const transactions = await getTransactions({
+    const transactions = await Transaction.find({
       date: {
         $gte: startDate,
         $lte: endDate,
       },
+      owner: user._id,
     });
     if (transactions.length === 0) {
       return res.status(404).json({
