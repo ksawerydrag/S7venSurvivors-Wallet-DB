@@ -1,3 +1,5 @@
+const Transaction = require("../models/transaction.model");
+
 const Joi = require("joi");
 
 const idSchema = Joi.object({
@@ -6,19 +8,19 @@ const idSchema = Joi.object({
 
 const {
   getTransactions,
-  // getCategories,
-  // getMore,
   createTransaction,
 } = require("../service/transactions.service");
 // const Transaction = require("../models/transaction.model");
 
 const get = async (req, res, next) => {
   try {
-    const { query, user } = req;
-    const transactions = await getTransactions({
-      ...query,
-      owner: user._id,
-    });
+    const transactions = await Transaction.find();
+    if (!transactions) {
+      return res.status(404).json({
+        status: "Not Found",
+        message: "Transactions not found.",
+      });
+    }
     res.status(200).json({
       status: "OK",
       data: {
@@ -26,7 +28,10 @@ const get = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: "Internal Server Error",
+      message: error.message,
+    });
   }
 };
 
@@ -42,13 +47,36 @@ const create = async (req, res, next) => {
       data: { transaction: newTransaction },
     });
   } catch (error) {
+    return res.status(500).json({
+      status: "Internal Server Error",
+      message: error.message,
+    });
+  }
+};
+
+const categories = async (req, res) => {
+  try {
+    const { category } = req.params;
+    console.log(category);
+    const transactions = await getTransactions({ category });
+    if (transactions.length === 0) {
+      return res.status(404).json({
+        status: "Not Found",
+        message: "Transactions not found.",
+      });
+    }
+    res.status(200).json({
+      status: "OK",
+      data: { transactions: transactions },
+    });
+  } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
   get,
-  // categories,
+  categories,
   // stats,
   create,
 };

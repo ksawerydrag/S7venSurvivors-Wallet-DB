@@ -9,7 +9,9 @@ router.get("/", auth, transactionsController.get);
 
 // router.get("/categories", auth, transactionsController.categories);
 
-// router.get("/stats", auth, transactionsController.stats);
+router.get("/stats/:year", auth, transactionsController.yearStats);
+
+router.get("/stats/:year/:month", auth, transactionsController.monthStats);
 
 router.post("/", auth, validation(transactionSchema), transactionsController.create);
 
