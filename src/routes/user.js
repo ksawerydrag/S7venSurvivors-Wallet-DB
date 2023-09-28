@@ -12,7 +12,7 @@ router.post("/signup", validation(signupSchema), userTask.signUp);
 
 router.post("/login", validation(loginSchema), userTask.logIn);
 
-// router.get("/logout", auth, userTask.signOut);
+router.get("/logout", auth, userTask.logOut);
 
 router.get("/about", auth, userTask.aboutUser);
 
