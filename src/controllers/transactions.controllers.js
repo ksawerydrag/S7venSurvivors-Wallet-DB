@@ -10,7 +10,6 @@ const {
   // getMore,
   createTransaction,
 } = require("../service/transactions.service");
-// const Transaction = require("../models/transaction.model");
 
 const get = async (req, res, next) => {
   try {
@@ -46,9 +45,29 @@ const create = async (req, res, next) => {
   }
 };
 
+const categories = async (req, res) => {
+  try {
+    const { category } = req.params;
+    console.log(category);
+    const transactions = await getTransactions({ category });
+    if (transactions.length === 0) {
+      return res.status(404).json({
+        status: "Not Found",
+        message: "Transactions not found.",
+      });
+    }
+    res.status(200).json({
+      status: "OK",
+      data: { transactions: transactions },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   get,
-  // categories,
+  categories,
   // stats,
   create,
 };
